@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PK_MapEditor", "PK_MapEditor\PK_MapEditor.csproj", "{3270F3D3-906C-47AC-A19B-692DB6108FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFMLCanvas", "SFMLCanvas\SFMLCanvas.csproj", "{B9082EDF-49E6-49E9-95F9-CE3576AF6598}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_PK_MapEditor", "Test_PK_MapEditor\Test_PK_MapEditor.csproj", "{88D9F353-5DB6-4BE9-8CB3-9BFE0B7AAB50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3270F3D3-906C-47AC-A19B-692DB6108FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3270F3D3-906C-47AC-A19B-692DB6108FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3270F3D3-906C-47AC-A19B-692DB6108FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3270F3D3-906C-47AC-A19B-692DB6108FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9082EDF-49E6-49E9-95F9-CE3576AF6598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9082EDF-49E6-49E9-95F9-CE3576AF6598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9082EDF-49E6-49E9-95F9-CE3576AF6598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9082EDF-49E6-49E9-95F9-CE3576AF6598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D9F353-5DB6-4BE9-8CB3-9BFE0B7AAB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D9F353-5DB6-4BE9-8CB3-9BFE0B7AAB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D9F353-5DB6-4BE9-8CB3-9BFE0B7AAB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D9F353-5DB6-4BE9-8CB3-9BFE0B7AAB50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

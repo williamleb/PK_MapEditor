@@ -1,0 +1,8 @@
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\bin\Debug\SFMCanvas.dll.config
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\bin\Debug\SFMCanvas.dll
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\bin\Debug\SFMCanvas.pdb
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\obj\Debug\SFMLCanvas.csprojResolveAssemblyReference.cache
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\obj\Debug\SFML_Canvas.Properties.Resources.resources
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\obj\Debug\SFMLCanvas.csproj.GenerateResource.Cache
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\obj\Debug\SFMCanvas.dll
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\SFMLCanvas\obj\Debug\SFMCanvas.pdb
