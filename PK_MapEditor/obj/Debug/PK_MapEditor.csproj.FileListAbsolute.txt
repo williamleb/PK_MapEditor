@@ -22,3 +22,6 @@ C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\obj\Debug\PK_Ma
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\bin\Debug\SFMCanvas.dll
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\bin\Debug\SFMCanvas.pdb
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\obj\Debug\PK_MapEditor.PK_MapEditor.resources
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\bin\Debug\Newtonsoft.Json.dll
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\bin\Debug\Newtonsoft.Json.xml
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\PK_MapEditor\bin\Debug\Assets\map\mapExemple_mode.json

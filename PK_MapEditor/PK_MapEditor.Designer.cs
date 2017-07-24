@@ -40,6 +40,7 @@
       this.GameMap.Size = new System.Drawing.Size(258, 185);
       this.GameMap.TabIndex = 0;
       this.GameMap.Text = "sfmlCanvas1";
+      this.GameMap.Click += new System.EventHandler(this.boop);
       // 
       // DrawTimer
       // 

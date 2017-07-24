@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
+using Newtonsoft.Json;
 
 namespace PK_MapEditor
 {
@@ -38,7 +39,7 @@ namespace PK_MapEditor
 
     #region Accessors
     
-    string FileName
+    public string FileName
     {
       get
       {
@@ -46,7 +47,7 @@ namespace PK_MapEditor
       }
     }
     
-    string Name
+    public string Name
     {
       get
       {
@@ -78,9 +79,9 @@ namespace PK_MapEditor
       }
     }
 
-    Version Version { get; set; }
+    public Version Version { get; set; }
 
-    PK_GameMode GameMode { get; set; }
+    public PK_GameMode GameMode { get; set; }
 
     #endregion
 

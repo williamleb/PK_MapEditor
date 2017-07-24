@@ -13,7 +13,11 @@ namespace PK_MapEditor
 {
   public partial class PK_MapEditor : Form
   {
-    RenderWindow renderWindow = null;
+    RenderWindow window = null;
+
+    PK_Border border = new PK_Border(50, 50, 100, 100);
+
+    PK_Area area = new PK_Area(100, 100, 100, 100, SFML.Graphics.Color.White);
 
     Random rnd = new Random();
 
@@ -21,13 +25,23 @@ namespace PK_MapEditor
     {
       InitializeComponent();
 
-      renderWindow = new RenderWindow(GameMap.Handle);
+      window = new RenderWindow(GameMap.Handle);
     }
 
     private void DrawTimer_OnTick(object sender, EventArgs e)
     {
-      renderWindow.Clear(new SFML.Graphics.Color((byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1)));
-      renderWindow.Display();
+      window.Clear(new SFML.Graphics.Color((byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1)));
+
+      border.Draw(window);
+      area.Draw(window);
+
+      window.Display();
+    }
+
+    private void boop(object sender, EventArgs e)
+    {
+      border.X = MousePosition.X - (sender as Control).Left - this.Left;
+      border.Y = MousePosition.Y - (sender as Control).Top - this.Top;
     }
   }
 }

@@ -19,6 +19,9 @@ namespace PK_MapEditor
 
     #region Accessors
 
+    /// <summary>
+    /// Access the version's major value.
+    /// </summary>
     public Int32 Major
     {
       get
@@ -35,6 +38,9 @@ namespace PK_MapEditor
       }
     }
 
+    /// <summary>
+    /// Access the version's minor value.
+    /// </summary>
     public Int32 Minor
     {
       get
@@ -51,6 +57,9 @@ namespace PK_MapEditor
       }
     }
 
+    /// <summary>
+    /// Access the version's patch value.
+    /// </summary>
     public Int32 Patch
     {
       get
@@ -71,21 +80,39 @@ namespace PK_MapEditor
 
     #region Constructors
 
+    /// <summary>
+    /// Creates a new version.
+    /// </summary>
+    /// <param name="major">The version's major value.</param>
+    /// <param name="minor">The version's minor value.</param>
+    /// <param name="patch">The version's patch value.</param>
     public PK_Version(Int32 major, Int32 minor, Int32 patch)
     {
       Set(major, minor, patch);
     }
 
+    /// <summary>
+    /// Creates a new empty version.
+    /// </summary>
     public PK_Version()
       : this(0, 0, 0)
     {
     }
 
+    /// <summary>
+    /// Creates a new version.
+    /// </summary>
+    /// <param name="major">The version's major value.</param>
     public PK_Version(Int32 major)
       : this(major, 0, 0)
     {
     }
 
+    /// <summary>
+    /// Creates a new version.
+    /// </summary>
+    /// <param name="major">The version's major value.</param>
+    /// <param name="minor">The version's minor value.</param>
     public PK_Version(Int32 major, Int32 minor)
       : this(major, minor, 0)
     {
@@ -95,7 +122,7 @@ namespace PK_MapEditor
     /// Creates a new version with a string on the format "major.minor.patch"
     /// where major, minor and patch represents integers.
     /// </summary>
-    /// <param name="version">The version string</param>
+    /// <param name="version">The version string.</param>
     public PK_Version(string version)
     {
       string[] values = version.Split('.');
@@ -131,6 +158,12 @@ namespace PK_MapEditor
       return Major.ToString() + '.' + Minor.ToString() + '.' + Patch.ToString();
     }
 
+    /// <summary>
+    /// Give the version's numerical values.
+    /// </summary>
+    /// <param name="major">The version's major value.</param>
+    /// <param name="minor">The version's minor value.</param>
+    /// <param name="patch">The version's patch value.</param>
     public void ToInt32(out Int32 major, out Int32 minor, out Int32 patch)
     {
       major = Major;
@@ -138,17 +171,28 @@ namespace PK_MapEditor
       patch = Patch;
     }
 
+    /// <summary>
+    /// Give the version's numerical values.
+    /// </summary>
+    /// <param name="major">The version's major value.</param>
+    /// <param name="minor">The version's minor value.</param>
     public void ToInt32(out Int32 major, out Int32 minor)
     {
       major = this.major;
       minor = this.minor;
     }
 
+    /// <summary>
+    /// Add a major update to the version.
+    /// </summary>
     public void AddMajor()
     {
       major++;
     }
 
+    /// <summary>
+    /// Remove a major update to the version.
+    /// </summary>
     public void RemoveMajor()
     {
       if (major - 1 < 0)
@@ -158,11 +202,17 @@ namespace PK_MapEditor
       major--;
     }
 
+    /// <summary>
+    /// Add a minor update to the version.
+    /// </summary>
     public void AddMinor()
     {
       minor++;
     }
 
+    /// <summary>
+    /// Remove a minor update to the version.
+    /// </summary>
     public void RemoveMinor()
     {
       if (minor - 1 < 0)
@@ -171,12 +221,18 @@ namespace PK_MapEditor
       }
       minor--;
     }
-    
+
+    /// <summary>
+    /// Add a patch update to the version.
+    /// </summary>
     public void AddPatch()
     {
       patch++;
     }
 
+    /// <summary>
+    /// Remove a patch update to the version.
+    /// </summary>
     public void RemovePatch()
     {
       if (patch - 1 < 0)
@@ -197,6 +253,9 @@ namespace PK_MapEditor
     /// <summary>
     /// Sets a new version.
     /// </summary>
+    /// <param name="major">The new version's major value.</param>
+    /// <param name="minor">The new version's minor value.</param>
+    /// <param name="patch">The new version's patch value.</param>
     public void Set(Int32 major, Int32 minor, Int32 patch)
     {
       Major = major;
@@ -207,6 +266,8 @@ namespace PK_MapEditor
     /// <summary>
     /// Sets a new version.
     /// </summary>
+    /// <param name="major">The new version's major value.</param>
+    /// <param name="minor">The new version's minor value.</param>
     public void Set(Int32 major, Int32 minor)
     {
       Major = major;
@@ -217,6 +278,7 @@ namespace PK_MapEditor
     /// <summary>
     /// Sets a new version.
     /// </summary>
+    /// <param name="major">The new version's major value.</param>
     public void Set(Int32 major)
     {
       Major = major;

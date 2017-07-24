@@ -1,0 +1,22 @@
+﻿{
+  "name": "itemName",
+  "path": "item/itemName.json",
+  "img": "img/item_itemName.png",
+  "thumbnail": "img/item_thumbnail_itemName.png",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "box": {
+    "offsetX": -2,
+    "offsetY": -2,
+    "width": 4,
+    "heiht": 4
+  },
+  "collisionBox": {
+    "offsetX": -1,
+    "offsetY": -1,
+    "width": 2,
+    "height": 2
+  }
+}

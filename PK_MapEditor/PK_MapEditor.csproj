@@ -36,6 +36,10 @@
     <StartupObject>PK_MapEditor.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="sfmlnet-audio-2">
       <HintPath>lib\sfmlnet-audio-2.dll</HintPath>
     </Reference>
@@ -61,6 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PK_Drawable.cs" />
+    <Compile Include="JsonObjects.cs" />
+    <Compile Include="PK_Area.cs" />
+    <Compile Include="PK_Border.cs" />
+    <Compile Include="PK_BorderShape.cs" />
     <Compile Include="PK_GameMode.cs" />
     <Compile Include="PK_Item.cs" />
     <Compile Include="PK_Map.cs" />
@@ -71,6 +80,7 @@
       <DependentUpon>PK_MapEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PK_Monster.cs" />
+    <Compile Include="PK_Movable.cs" />
     <Compile Include="PK_SpawnArea.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +97,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Assets\items\itemExemple.json" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -96,6 +108,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Assets\map\mapExemple_mode.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -136,9 +151,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ressources\img\" />
-    <Folder Include="Ressources\items\" />
-    <Folder Include="Ressources\monsters\" />
+    <Folder Include="Assets\img\" />
+    <Folder Include="Assets\monsters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
