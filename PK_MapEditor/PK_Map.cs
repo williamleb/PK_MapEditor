@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
+using SFML.System;
 using Newtonsoft.Json;
 
 namespace PK_MapEditor
 {
-  public class PK_Map
+  public class PK_Map : PK_Drawable
   {
 
     #region Properties
@@ -16,12 +17,6 @@ namespace PK_MapEditor
     #region Static Properties
 
     static PK_Map instance = null;
-
-    #endregion
-
-    #region SFML Properties
-
-    Texture backgroundImage = null;
 
     #endregion
 
@@ -35,10 +30,16 @@ namespace PK_MapEditor
 
     string name;
 
+    float viewScale;
+
+    PK_Area viewArea;
+
+    Texture backgroundImage;
+
     #endregion
 
     #region Accessors
-    
+
     public string FileName
     {
       get
@@ -83,17 +84,75 @@ namespace PK_MapEditor
 
     public PK_GameMode GameMode { get; set; }
 
+    public Texture BackgroundImage
+    {
+      get
+      {
+        return backgroundImage;
+      }
+      set
+      {
+        backgroundImage = value;
+
+        if (value != null)
+        {
+          // Resets the view area
+          viewArea.X = 0;
+          viewArea.Y = 0;
+          ViewScale = 1;
+
+          // TODO: Clear objects that are out of bounds (which don't intesect with the new global view area.
+
+        }
+        else
+        {
+          allItems.Clear();
+          allSpawnAreas.Clear();
+        }
+      }
+    }
+
+    public float ViewScale
+    {
+      get
+      {
+        return viewScale;
+      }
+      set
+      {
+        if (value < 0)
+        {
+          throw new ArgumentOutOfRangeException("value", "Scale must be positive.");
+        }
+
+        viewScale = value;
+
+        // Changes the view area according to the new view scale.
+        viewArea.Width = (int)(PK_MapEditor.GAMEMAP_WIDTH * value);
+        viewArea.Height = (int)(PK_MapEditor.GAMEMAP_HEIGHT * value);
+      }
+    }
+
     #endregion
+
+    #region Constructors
 
     private PK_Map()
     {
-      //backgroundImage = new Texture(""); ???
+      viewArea = new PK_Area();
+      BackgroundImage = null;
       Name = "Undefined";
       Version = new Version();
       GameMode = PK_GameMode.Undefined;
     }
 
-    public PK_Map GetInstance()
+    #endregion
+
+    #region Methods
+
+    #region Static Methods
+
+    public static PK_Map GetInstance()
     {
       if (instance == null)
       {
@@ -102,6 +161,8 @@ namespace PK_MapEditor
 
       return instance;
     }
+
+    #endregion
 
     public void Delete()
     {
@@ -138,6 +199,30 @@ namespace PK_MapEditor
       allSpawnAreas.Remove(spawnArea);
     }
 
-    // TODO : GetInstace, Parse from file
+    public void SetViewScale(float scale)
+    {
+
+    }
+
+    // TODO: Parse from file
+
+    public override void Draw(RenderWindow window)
+    {
+      if (Visible)
+      {
+        // Draws the background depending of the view area.
+        Sprite viewedBackground = new Sprite(BackgroundImage,
+                                              new IntRect(viewArea.X, viewArea.Y, viewArea.Width, viewArea.Height));
+        viewedBackground.Position = new Vector2f(0, 0);
+        viewedBackground.Scale = new Vector2f(1 / viewScale, 1 / viewScale);
+        window.Draw(viewedBackground);
+
+        //TODO: Draw items spawn areas if they collide with the watch area
+
+        //TODO: Draw items, spawn areas and borders larger if they are nearer
+      }
+    }
+
+    #endregion
   }
 }

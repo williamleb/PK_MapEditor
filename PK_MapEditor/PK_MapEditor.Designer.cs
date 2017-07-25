@@ -35,9 +35,9 @@
       // 
       // GameMap
       // 
-      this.GameMap.Location = new System.Drawing.Point(230, 176);
+      this.GameMap.Location = new System.Drawing.Point(233, 106);
       this.GameMap.Name = "GameMap";
-      this.GameMap.Size = new System.Drawing.Size(258, 185);
+      this.GameMap.Size = new System.Drawing.Size(255, 255);
       this.GameMap.TabIndex = 0;
       this.GameMap.Text = "sfmlCanvas1";
       this.GameMap.Click += new System.EventHandler(this.boop);

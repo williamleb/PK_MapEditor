@@ -136,6 +136,43 @@ namespace PK_MapEditor
     #region Methods
 
     /// <summary>
+    /// Checks if the area collides with another area.
+    /// </summary>
+    /// <param name="area">The area to check collision with.</param>
+    /// <returns>True if the areas collide, false if they don't.</returns>
+    public bool CollideWith(PK_Area area)
+    {
+      // Area1 is the current area
+      FloatRect area1 = new FloatRect(this.X, this.Y, this.Width, this.Height);
+
+      // Area2 is the given area
+      FloatRect area2 = new FloatRect(area.X, area.Y, area.Width, area.Height);
+
+      return area1.Intersects(area2);
+    }
+
+    /// <summary>
+    /// Checks if the area contains a specific point.
+    /// </summary>
+    /// <param name="x">The X coordinate of the point.</param>
+    /// <param name="y">The Y coordinate of the point.</param>
+    /// <returns>True if the area contains the point, false if it doesn't.</returns>
+    public bool Contains(int x, int y)
+    {
+      return new FloatRect(this.X, this.Y, this.Width, this.Height).Contains(x, y);
+    }
+
+    /// <summary>
+    /// Checks if the area contains a specific point.
+    /// </summary>
+    /// <param name="coord">The coordinates of the point.</param>
+    /// <returns>True if the area contains the point, false if it doesn't.</returns>
+    public bool Contains(Vector2f coord)
+    {
+      return new FloatRect(this.X, this.Y, this.Width, this.Height).Contains(coord.X, coord.Y);
+    }
+
+    /// <summary>
     /// Draws the area.
     /// </summary>
     /// <param name="window">The context of the drawing.</param>

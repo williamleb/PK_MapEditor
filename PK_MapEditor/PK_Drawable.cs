@@ -37,6 +37,14 @@ namespace PK_MapEditor
 
     #endregion
 
+    #region Constructors
+
+    protected PK_Drawable()
+    {
+    }
+
+    #endregion
+
     public abstract void Draw(RenderWindow window);
   }
 }
