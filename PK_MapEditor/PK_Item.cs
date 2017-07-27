@@ -7,7 +7,7 @@ using SFML.Graphics;
 
 namespace PK_MapEditor
 {
-  public class PK_Item : PK_Drawable
+  public class PK_Item : PK_Movable
   {
 
     #region Properties
@@ -49,10 +49,18 @@ namespace PK_MapEditor
     /// </summary>
     public string Name { get; private set; }
 
+    public PK_Area SurroundingArea
+    {
+      get
+      {
+        return box;
+      }
+    }
+
     /// <summary>
     /// Access the x coordinate of the item on the map.
     /// </summary>
-    public int X
+    public override int X
     {
       get
       {
@@ -68,7 +76,7 @@ namespace PK_MapEditor
         }
         catch (ArgumentNullException)
         {
-          throw new InvalidOperationException("The position of the item cannot be chanfed if it's box or it's collision box do not exist.");
+          throw new InvalidOperationException("The position of the item cannot be changed if it's box or it's collision box do not exist.");
         }
       }
     }
@@ -76,7 +84,7 @@ namespace PK_MapEditor
     /// <summary>
     /// Access the y coordinate of the item on the map.
     /// </summary>
-    public int Y
+    public override int Y
     {
       get
       {
@@ -92,7 +100,7 @@ namespace PK_MapEditor
         }
         catch (NullReferenceException)
         {
-          throw new InvalidOperationException("The position of the item cannot be chanfed if it's box or it's collision box do not exist.");
+          throw new InvalidOperationException("The position of the item cannot be changed if it's box or it's collision box do not exist.");
         }
       }
     }
@@ -122,12 +130,14 @@ namespace PK_MapEditor
       // Creates the collision box so it takes all the sprite.
       this.collisionBox = new PK_Area(X, Y, (int)Image.Size.X, (int)Image.Size.Y, COLLISION_BOX_DEFAULT_COLOR);
       this.collisionBox.Visible = false;
+      this.collisionBox.Enable = false;
       collisionBoxOffsetX = 0;
       collisionBoxOffsetY = 0;
 
       // Creates the box so it takes all the sprite
       this.box = new PK_Area(X, Y, (int)Image.Size.X, (int)Image.Size.Y, BOX_DEFAULT_COLOR);
       this.box.Visible = false;
+      this.box.Enable = false;
       boxOffsetX = 0;
       boxOffsetY = 0;
     }
@@ -152,12 +162,14 @@ namespace PK_MapEditor
       this.collisionBox = collisionBox;
       this.collisionBox.Visible = false;
       this.collisionBox.AreaColor = COLLISION_BOX_DEFAULT_COLOR;
+      this.collisionBox.Enable = false;
       collisionBoxOffsetX = collisionBox.X - this.X;
       collisionBoxOffsetY = collisionBox.Y - this.Y;
 
       // Creates the box so it takes all the sprited
       this.box = new PK_Area(X, Y, (int)Image.Size.X, (int)Image.Size.Y, BOX_DEFAULT_COLOR);
       this.box.Visible = false;
+      this.box.Enable = false;
       boxOffsetX = 0;
       boxOffsetY = 0;
     }
@@ -183,12 +195,14 @@ namespace PK_MapEditor
       this.collisionBox = collisionBox;
       this.collisionBox.Visible = false;
       this.collisionBox.AreaColor = COLLISION_BOX_DEFAULT_COLOR;
+      this.collisionBox.Enable = false;
       collisionBoxOffsetX = collisionBox.X - this.X;
       collisionBoxOffsetY = collisionBox.Y - this.Y;
 
       this.box = box;
       this.box.Visible = false;
       this.box.AreaColor = BOX_DEFAULT_COLOR;
+      this.box.Enable = false;
       boxOffsetX = box.X - this.X;
       boxOffsetY = box.Y - this.Y;
     }

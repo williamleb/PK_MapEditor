@@ -1,0 +1,69 @@
+{
+	"name": "mapName",
+	"version": "0.1.0",
+  "mode": "mapMode",
+  "path": "map/mapName_mapMode.json",
+	"backgroundImage": "img/map_mapName.png",
+	"items": [
+		{
+			"name": "itemName1",
+			"position": {
+				"x": 0,
+				"y": 0
+			}
+		},
+		{
+			"name": "itemName2",
+			"position": {
+				"x": 0,
+				"y": 0
+			}
+		}
+	],
+	"spawnAreas": [
+		{
+			"type": "monster",
+			"name": "monsterName",
+			"height": 0,
+			"width": 0,
+			"position": {
+				"x": 0,
+				"y": 0
+			}
+		},
+		{
+			"type": "hero",
+			"name": "hero",
+			"height": 0,
+			"width": 0,
+			"position": {
+				"x": 0,
+				"y": 0
+			}
+		},
+		{
+			"type": "object",
+			"name": "objectName",
+			"height": 0,
+			"width": 0,
+			"position": {
+				"x": 0,
+				"y": 0
+			}
+		}
+	],
+	"height": 0,
+	"width": 0,
+	"border": {
+		"type": "circle",
+		"shape": {
+			"radius": 0,
+			"height": 0,
+			"width": 0
+		},
+		"center": {
+			"x": 0,
+			"y": 0
+		}
+	}
+}

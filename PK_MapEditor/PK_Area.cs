@@ -11,7 +11,7 @@ namespace PK_MapEditor
   /// <summary>
   /// Represents an rectangle area on the map.
   /// </summary>
-  public class PK_Area : PK_Drawable
+  public class PK_Area : PK_Movable
   {
     #region Properties
 
@@ -26,16 +26,6 @@ namespace PK_MapEditor
     #endregion
 
     #region Accessors
-
-    /// <summary>
-    /// Access the X coordinate of the area's top left corner.
-    /// </summary>
-    public int X { get; set; }
-
-    /// <summary>
-    /// Access the Y coordinate of the area's top left corner.
-    /// </summary>
-    public int Y { get; set; }
 
     /// <summary>
     /// Access the width of the area.
@@ -186,6 +176,8 @@ namespace PK_MapEditor
         shape.FillColor = AreaColor;
 
         window.Draw(shape);
+
+        base.Draw(window);
       }
     }
 

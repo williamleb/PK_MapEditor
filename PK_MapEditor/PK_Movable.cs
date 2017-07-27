@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
+using SFML.System;
 
 namespace PK_MapEditor
 {
@@ -16,11 +17,13 @@ namespace PK_MapEditor
 
     #region Static Properties
 
-    public static bool SomethingPicked;
+    /// <summary>
+    /// Represents the item that is currently picked.
+    /// Is set to null if there is no picked item.
+    /// </summary>
+    public static PK_Movable PickedItem;
 
     #endregion
-
-    bool canBePicked;
 
     bool picked;
 
@@ -40,11 +43,17 @@ namespace PK_MapEditor
 
     #region Constructors
 
+    /// <summary>
+    /// Sets the picked item to null.
+    /// </summary>
     static PK_Movable()
     {
-      SomethingPicked = false;
+      PickedItem = null;
     }
 
+    /// <summary>
+    /// Creates a new movable.
+    /// </summary>
     protected PK_Movable()
       : base()
     {
@@ -67,17 +76,21 @@ namespace PK_MapEditor
     /// <summary>
     /// The x coordinate of the object.
     /// </summary>
-    public int X { get; set; }
+    public virtual int X { get; set; }
 
     /// <summary>
     /// The y coordinate of the object.
     /// </summary>
-    public int Y { get; set; }
+    public virtual int Y { get; set; }
 
     #endregion
 
     #region Methods
 
+    /// <summary>
+    /// Draws the movable.
+    /// </summary>
+    /// <param name="window">The context of the drawing.</param>
     public override void Draw(RenderWindow window)
     {
       if (Visible)
@@ -86,32 +99,52 @@ namespace PK_MapEditor
       }
     }
 
-    //TODO: Pick (add event handler), Unpick
-    public void Pick()// TODO: Maybe have the mouse position?
+    /// <summary>
+    /// Picks the movable so it can be dragged with the mouse.
+    /// </summary>
+    /// <param name="mouseX">Represents the X coordinate of the mouse on the map.</param>
+    /// <param name="mouseY">Represents the Y coordinate of the mouse on the map.</param>
+    public void Pick(int mouseX, int mouseY)
     {
       // We pick the item if it is visible, enabled and there is not
       // something else being picked
-      if (Visible && Enable && !SomethingPicked)
+      if (Visible && Enable && PickedItem == null)
       {
-        SomethingPicked = true;
+        PickedItem = this;
         picked = true;
+
+        offsetX = X - mouseX;
+        offsetY = Y - mouseY;
 
         origX = X;
         origY = Y;
-
-        // TODO: Set offsets
       }
     }
 
+    /// <summary>
+    /// Picks the movable so it can be dragged with the mouse.
+    /// </summary>
+    /// <param name="mousePos">The position of the mouse on the map.</param>
+    public void Pick(Vector2i mousePos)
+    {
+      Pick(mousePos.X, mousePos.Y);
+    }
+
+    /// <summary>
+    /// Unpicks the movable and drop it on the map.
+    /// </summary>
     public void Unpick()
     {
       if (picked)
       {
-        SomethingPicked = false;
+        PickedItem = null;
         picked = false;
       }
     }
 
+    /// <summary>
+    /// Unpicks the movable, but cancel the movement it has done.
+    /// </summary>
     public void CancelPick()
     {
       if (picked)
@@ -121,6 +154,34 @@ namespace PK_MapEditor
         Y = origY;
       }
     }
+
+    /// <summary>
+    /// Update a picked item.
+    /// This method must be called at least at 30 fps whenever an item is picked.
+    /// Picked item can be accessed via the property PK_Movable.PickedItem.
+    /// </summary>
+    /// <param name="mouseX">Represents the X coordinate of the mouse on the map.</param>
+    /// <param name="mouseY">Represents the Y coordinate of the mouse on the map.</param>
+    public void Update(int mouseX, int mouseY)
+    {
+      if (picked)
+      {
+        X = mouseX + offsetX;
+        Y = mouseY + offsetY;
+      }
+    }
+
+    /// <summary>
+    /// Update a picked item.
+    /// This method must be called at least at 30 fps whenever an item is picked.
+    /// Picked item can be accessed via the property PK_Movable.PickedItem.
+    /// </summary>
+    /// <param name="mousePos">The position of the mouse on the map.</param>
+    public void Update(Vector2i mousePos)
+    {
+      Update(mousePos.X, mousePos.Y);
+    }
+
     #endregion
   }
 }

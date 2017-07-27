@@ -16,7 +16,7 @@ namespace PK_MapEditor
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new PK_MapEditor());
+      Application.Run(PK_MapEditor.GetInstance());
     }
   }
 }

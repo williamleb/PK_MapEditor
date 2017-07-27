@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace PK_MapEditor
 {
@@ -22,9 +23,9 @@ namespace PK_MapEditor
 
     #region Lists
 
-    List<PK_Item> allItems = new List<PK_Item>();
+    List<PK_Drawable> allDrawables = new List<PK_Drawable>();
 
-    List<PK_SpawnArea> allSpawnAreas = new List<PK_SpawnArea>();
+    List<PK_Drawable> allSeenDrawables = new List<PK_Drawable>();
 
     #endregion
 
@@ -40,6 +41,18 @@ namespace PK_MapEditor
 
     #region Accessors
 
+    private PK_Area ViewArea
+    {
+      get
+      {
+        return viewArea;
+      }
+      set
+      {
+        viewArea = value;
+      }
+    }
+
     public string FileName
     {
       get
@@ -47,7 +60,7 @@ namespace PK_MapEditor
         return name.Replace(" ", "") + '_' + PK_GameModeOperations.EnumToString(GameMode) + ".json";
       }
     }
-    
+
     public string Name
     {
       get
@@ -58,7 +71,7 @@ namespace PK_MapEditor
       {
         if (value.Length == 0)
         {
-          throw new FormatException("The name of the map cannot be ntothing.");  
+          throw new FormatException("The name of the map cannot be ntothing.");
         }
 
         bool hasALetter = false;
@@ -97,8 +110,8 @@ namespace PK_MapEditor
         if (value != null)
         {
           // Resets the view area
-          viewArea.X = 0;
-          viewArea.Y = 0;
+          ViewArea.X = 0;
+          ViewArea.Y = 0;
           ViewScale = 1;
 
           // TODO: Clear objects that are out of bounds (which don't intesect with the new global view area.
@@ -106,8 +119,7 @@ namespace PK_MapEditor
         }
         else
         {
-          allItems.Clear();
-          allSpawnAreas.Clear();
+          allDrawables.Clear();
         }
       }
     }
@@ -128,8 +140,8 @@ namespace PK_MapEditor
         viewScale = value;
 
         // Changes the view area according to the new view scale.
-        viewArea.Width = (int)(PK_MapEditor.GAMEMAP_WIDTH * value);
-        viewArea.Height = (int)(PK_MapEditor.GAMEMAP_HEIGHT * value);
+        ViewArea.Width = (int)(PK_MapEditor.GAMEMAP_WIDTH * value);
+        ViewArea.Height = (int)(PK_MapEditor.GAMEMAP_HEIGHT * value);
       }
     }
 
@@ -139,11 +151,13 @@ namespace PK_MapEditor
 
     private PK_Map()
     {
-      viewArea = new PK_Area();
+      ViewArea = new PK_Area();
       BackgroundImage = null;
       Name = "Undefined";
       Version = new Version();
       GameMode = PK_GameMode.Undefined;
+
+      AddDrawable(new PK_SpawnArea(20, 20, 100, 100));
     }
 
     #endregion
@@ -169,39 +183,19 @@ namespace PK_MapEditor
       instance = null;
     }
 
-    public void AddItem(PK_Item item)
+    public void AddDrawable(PK_Drawable drawable)
     {
-      allItems.Add(item);
+      allDrawables.Add(drawable);
     }
 
-    public void RemoveItem(PK_Item item)
+    public void RemoveDrawable(PK_Drawable drawable)
     {
-      if (!allItems.Contains(item))
+      if (!allDrawables.Contains(drawable))
       {
         throw new KeyNotFoundException("The item sent was not in the list of used items.");
       }
 
-      allItems.Remove(item);
-    }
-
-    public void AddSpawnArea(PK_SpawnArea spawnArea)
-    {
-      allSpawnAreas.Add(spawnArea);
-    }
-
-    public void RemoveSpawnArea(PK_SpawnArea spawnArea)
-    {
-      if (!allSpawnAreas.Contains(spawnArea))
-      {
-        throw new KeyNotFoundException("The spawn area sent was not in the list of used items.");
-      }
-
-      allSpawnAreas.Remove(spawnArea);
-    }
-
-    public void SetViewScale(float scale)
-    {
-
+      allDrawables.Remove(drawable);
     }
 
     // TODO: Parse from file
@@ -212,15 +206,134 @@ namespace PK_MapEditor
       {
         // Draws the background depending of the view area.
         Sprite viewedBackground = new Sprite(BackgroundImage,
-                                              new IntRect(viewArea.X, viewArea.Y, viewArea.Width, viewArea.Height));
+                                              new IntRect(ViewArea.X, ViewArea.Y, ViewArea.Width, ViewArea.Height));
         viewedBackground.Position = new Vector2f(0, 0);
         viewedBackground.Scale = new Vector2f(1 / viewScale, 1 / viewScale);
         window.Draw(viewedBackground);
 
-        //TODO: Draw items spawn areas if they collide with the watch area
+        // Draws drawables that collide with the view area
+        foreach (PK_Drawable drawable in allSeenDrawables)
+        {
+          drawable.Draw(window);
+        }
 
         //TODO: Draw items, spawn areas and borders larger if they are nearer
       }
+    }
+
+    /// <summary>
+    /// Updates the map.
+    /// </summary>
+    /// <param name="mouseX">The x coordinate of the mouse on the form.</param>
+    /// <param name="mouseY">The y coordinate of the map on the form.</param>
+    public void Update(int mouseX, int mouseY)
+    {
+      // Resets the list of seen drawables
+      allSeenDrawables.Clear();
+
+      // Determines the new seen drawables
+      List<PK_Drawable> viewedDrawables = new List<PK_Drawable>();
+      foreach(PK_Drawable drawable in allDrawables)
+      {
+        // In case of a spawn area
+        if (drawable is PK_SpawnArea)
+        {
+          PK_SpawnArea spawnArea = drawable as PK_SpawnArea;
+          
+          if (viewArea.CollideWith(spawnArea))
+          {
+            viewedDrawables.Add(spawnArea);
+          }
+        }
+        // In case of an item
+        else if (drawable is PK_Item)
+        {
+          PK_Item item = drawable as PK_Item;
+
+          if (viewArea.CollideWith(item.SurroundingArea))
+          {
+            viewedDrawables.Add(item);
+          }
+        }
+        // TODO: In case of a border
+      }
+
+      // Add the drawables that can be seen in the right list
+      foreach(PK_Drawable drawable in viewedDrawables)
+      {
+        allSeenDrawables.Add(drawable);
+      }
+      
+
+      // Updates the picked item
+      if (PK_Movable.PickedItem != null)
+      {
+        PK_Movable.PickedItem.Update(GetMapXFromFormX(mouseX), GetMapYFromFormY(mouseY));
+      }
+    }
+
+    public void OnMouseDown(object sender, MouseEventArgs e)
+    {
+      int mouseX = GetMapXFromGameMapX(e.X);
+      int mouseY = GetMapYFromGameMapY(e.Y);
+
+      // TODO: Maybe put that in a function?
+      foreach(PK_Drawable drawable in allSeenDrawables)
+      {
+        PK_Movable movable = drawable as PK_Movable;
+        if (movable is PK_Movable)
+        {
+          bool isPicked = false;
+          // In case of a spawn area
+          if (movable is PK_SpawnArea)
+          {
+            PK_SpawnArea spawnArea = movable as PK_SpawnArea;
+
+            if (spawnArea.Contains(mouseX, mouseY))
+            {
+              isPicked = true;
+            }
+          }
+          // In case of an item
+          else if (movable is PK_Item)
+          {
+            PK_Item item = movable as PK_Item;
+
+            if (item.SurroundingArea.Contains(mouseX, mouseY))
+            {
+              isPicked = true;
+            }
+          }
+          // TODO: In case of a border
+
+          if (isPicked)
+          {
+            movable.Pick(mouseX, mouseY);
+          }
+        }
+      }
+
+      //TODO: Option to move the background if nothing is picked
+    }
+
+    public int GetMapXFromFormX(int formX)
+    {
+      return GetMapXFromGameMapX(formX + PK_MapEditor.GetInstance().GameMapControl.Left);
+    }
+
+    public int GetMapYFromFormY(int formY)
+    {
+      return GetMapYFromGameMapY(formY + PK_MapEditor.GetInstance().GameMapControl.Top);
+    }
+
+    public int GetMapXFromGameMapX(int gameMapX)
+    {
+      return gameMapX + ViewArea.X;
+    }
+
+    public int GetMapYFromGameMapY(int gameMapY)
+    {
+      return gameMapY + ViewArea.Y;
     }
 
     #endregion

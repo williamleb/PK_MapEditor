@@ -30,7 +30,7 @@
     {
       this.components = new System.ComponentModel.Container();
       this.GameMap = new PK_MapViewer.SFMLCanvas();
-      this.DrawTimer = new System.Windows.Forms.Timer(this.components);
+      this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
       this.SuspendLayout();
       // 
       // GameMap
@@ -40,13 +40,14 @@
       this.GameMap.Size = new System.Drawing.Size(255, 255);
       this.GameMap.TabIndex = 0;
       this.GameMap.Text = "sfmlCanvas1";
-      this.GameMap.Click += new System.EventHandler(this.boop);
+      this.GameMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameMap_MouseDown);
+      this.GameMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameMap_MouseUp);
       // 
-      // DrawTimer
+      // UpdateTimer
       // 
-      this.DrawTimer.Enabled = true;
-      this.DrawTimer.Interval = 33;
-      this.DrawTimer.Tick += new System.EventHandler(this.DrawTimer_OnTick);
+      this.UpdateTimer.Enabled = true;
+      this.UpdateTimer.Interval = 33;
+      this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_OnTick);
       // 
       // PK_MapEditor
       // 
@@ -56,6 +57,7 @@
       this.Controls.Add(this.GameMap);
       this.Name = "PK_MapEditor";
       this.Text = "Project Kindom: Map Editor";
+      this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PK_MapEditor_MouseUp);
       this.ResumeLayout(false);
 
     }
@@ -63,7 +65,7 @@
     #endregion
 
     private PK_MapViewer.SFMLCanvas GameMap;
-    private System.Windows.Forms.Timer DrawTimer;
+    private System.Windows.Forms.Timer UpdateTimer;
   }
 }
 

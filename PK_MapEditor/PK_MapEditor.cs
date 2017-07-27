@@ -24,23 +24,35 @@ namespace PK_MapEditor
     // Lower indexes are more distant than higher indexes
     private static float[] allowedViewScales = new float[] { 2.0f, 1.0f, 0.75f, 0.5f, 0.25f };
 
+    static PK_MapEditor instance = null;
+
     #endregion
 
     RenderWindow window;
 
     int currentViewScaleIndex;
 
+    bool itemSpawnedFromForm;
+
     #endregion
 
-    PK_Border border = new PK_Border(50, 50, 100, 100);
+    #region Accessor
 
-    PK_Area area = new PK_Area(100, 100, 100, 100, SFML.Graphics.Color.White);
+    public Control GameMapControl
+    {
+      get
+      {
+        return GameMap;
+      }
+    }
+
+    #endregion
 
     PK_Map map = PK_Map.GetInstance();
 
     Random rnd = new Random();
 
-    public PK_MapEditor()
+    private PK_MapEditor()
     {
       InitializeComponent();
       this.MouseWheel += new MouseEventHandler(GameMap_OnMouseWheel);
@@ -53,26 +65,19 @@ namespace PK_MapEditor
 
       currentViewScaleIndex = Array.IndexOf(allowedViewScales, 1.0f);
 
+      itemSpawnedFromForm = false;
+
       map.BackgroundImage = new Texture("Assets/img/background_test.png");
       map.ViewScale = allowedViewScales[currentViewScaleIndex];
     }
 
-    private void DrawTimer_OnTick(object sender, EventArgs e)
+    public static PK_MapEditor GetInstance()
     {
-      window.Clear(new SFML.Graphics.Color((byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1)));
-
-      map.Draw(window);
-
-      border.Draw(window);
-      area.Draw(window);
-
-      window.Display();
-    }
-
-    private void boop(object sender, EventArgs e)
-    {
-      border.X = MousePosition.X - (sender as Control).Left - this.Left;
-      border.Y = MousePosition.Y - (sender as Control).Top - this.Top;
+      if (instance == null)
+      {
+        instance = new PK_MapEditor();
+      }
+      return instance;
     }
 
     private void GameMap_OnMouseWheel(object sender, EventArgs e)
@@ -90,6 +95,66 @@ namespace PK_MapEditor
       map.ViewScale = allowedViewScales[currentViewScaleIndex];
     }
 
-      // TODO : GameMapOnResize
+    private void UpdateTimer_OnTick(object sender, EventArgs e)
+    {
+      // Updates
+      map.Update(GetFormXFromGlobalX(MousePosition.X), GetFormYromGlobalY(MousePosition.Y));
+
+      // Draws
+      window.Clear(new SFML.Graphics.Color((byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1), (byte)rnd.Next(0, 255 + 1)));
+
+      map.Draw(window);
+
+      window.Display();
     }
+
+    private void PK_MapEditor_MouseUp(object sender, MouseEventArgs e)
+    {
+      if (PK_Movable.PickedItem != null)
+      {
+        IntRect gameMap = new IntRect(GameMap.Left, GameMap.Top, GameMap.Width, GameMap.Height);
+
+        // If the mouse wasn't released on the game map, we cancel the pick
+        if(!gameMap.Contains(e.X, e.Y))
+        {
+          PK_Movable.PickedItem.CancelPick();
+
+          // And, if the item was spawned from the form, and not picked from the game map
+          if (itemSpawnedFromForm)
+          {
+            // We delete the item
+            map.RemoveDrawable(PK_Movable.PickedItem);
+          }
+        }
+
+        // We tell that the next item that we pick will not necesserly be spawned from the form.
+        itemSpawnedFromForm = false;
+      }
+    }
+
+    private void GameMap_MouseDown(object sender, MouseEventArgs e)
+    {
+      map.OnMouseDown(sender, e);
+    }
+
+    // TODO : GameMapOnResize
+
+    public int GetFormXFromGlobalX(int globalX)
+    {
+      return globalX - this.Left;
+    }
+
+    public int GetFormYromGlobalY(int globalY)
+    {
+      return globalY - this.Top;
+    }
+
+    private void GameMap_MouseUp(object sender, MouseEventArgs e)
+    {
+      if (PK_Movable.PickedItem != null)
+      {
+        PK_Movable.PickedItem.Unpick();
+      }
+    }
+  }
 }

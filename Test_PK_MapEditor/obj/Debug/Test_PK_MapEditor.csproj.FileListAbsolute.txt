@@ -21,3 +21,6 @@ C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\obj\Debug\Test_PK_MapEditor.csprojResolveAssemblyReference.cache
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\obj\Debug\Test_PK_MapEditor.dll
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\obj\Debug\Test_PK_MapEditor.pdb
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\background_test.png
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\background_test2.png
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\map\mapExemple_mode.json
