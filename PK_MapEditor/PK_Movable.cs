@@ -9,9 +9,9 @@ using SFML.System;
 namespace PK_MapEditor
 {
   /// <summary>
-  /// Represents objects that can be moves on the map viewer.
+  /// Represents objects that can be moved on the map viewer.
   /// </summary>
-  public class PK_Movable : PK_Drawable
+  public class PK_Movable : PK_Selectable
   {
     #region Properties
 
@@ -69,11 +69,6 @@ namespace PK_MapEditor
     #region Accessors
 
     /// <summary>
-    /// Determine whether the current object can be picked or not.
-    /// </summary>
-    public bool Enable { get; set; }
-
-    /// <summary>
     /// The x coordinate of the object.
     /// </summary>
     public virtual int X { get; set; }
@@ -95,8 +90,11 @@ namespace PK_MapEditor
     {
       if (Visible)
       {
-        //TODO: If picked, draw a little border
+        //TODO: If picked, change the color of the little border
+
+        base.Draw(window);
       }
+      
     }
 
     /// <summary>

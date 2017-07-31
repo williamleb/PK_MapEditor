@@ -318,12 +318,12 @@ namespace PK_MapEditor
 
     public int GetMapXFromFormX(int formX)
     {
-      return GetMapXFromGameMapX(formX + PK_MapEditor.GetInstance().GameMapControl.Left);
+      return GetMapXFromGameMapX(formX - PK_MapEditor.GetInstance().GameMapControl.Left);
     }
 
     public int GetMapYFromFormY(int formY)
     {
-      return GetMapYFromGameMapY(formY + PK_MapEditor.GetInstance().GameMapControl.Top);
+      return GetMapYFromGameMapY(formY - PK_MapEditor.GetInstance().GameMapControl.Top);
     }
 
     public int GetMapXFromGameMapX(int gameMapX)
