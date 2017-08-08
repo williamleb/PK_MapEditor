@@ -1,0 +1,22 @@
+﻿{
+  "name": "TestTree",
+  "path": "item/TestTree.json",
+  "img": "img/item_TestTree.png",
+  "thumbnail": "img/item_TestTree.png",
+  "position": {
+    "x": 25,
+    "y": 25
+  },
+  "box": {
+    "offsetX": -10,
+    "offsetY": -42,
+    "width": 20,
+    "height": 45
+  },
+  "collisionBox": {
+    "offsetX": -7,
+    "offsetY": -28,
+    "width": 14,
+    "height": 31
+  }
+}

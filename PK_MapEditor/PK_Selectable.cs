@@ -12,6 +12,14 @@ namespace PK_MapEditor
   {
     #region Properties
 
+    #region Constants
+
+    private int DEFAULT_BORDER_THICKNESS = 3;
+
+    private static readonly Color BORDER_COLOR = Color.Blue;
+
+    #endregion
+
     #region Static Properties
 
     /// <summary>
@@ -66,11 +74,32 @@ namespace PK_MapEditor
         }
         if (value != null)
         {
-          shape.Position = new Vector2f(value.Left, value.Top);
-          shape.Size = new Vector2f(value.Width, value.Height);
-          shape.FillColor = Color.Transparent;
-          shape.OutlineColor = Color.Blue;
-          shape.OutlineThickness = 3;
+          // This if/else statement is used not to cause a stackoverflow error by calling map.GetInstance
+          // when during the construction of the map
+          if (value.Left == 0 && value.Top == 0 && value.Width == 0 && value.Height == 0)
+          {
+            shape.Position = new Vector2f(0, 0);
+            shape.Size = new Vector2f(0, 0);
+          }
+          else
+          {
+            PK_Map map = PK_Map.GetInstance();
+
+            // Position
+            int mapX = (int)((value.Left - map.ViewArea.X) * 1 / map.ViewScale);
+            int mapY = (int)((value.Top - map.ViewArea.Y) * 1 / map.ViewScale);
+            shape.Position = new Vector2f(mapX, mapY);
+
+            // Dimensions
+            int mapWidth = (int)(value.Width * (1 / map.ViewScale));
+            int mapHeight = (int)(value.Height * (1 / map.ViewScale));
+            shape.Size = new Vector2f(mapWidth, mapHeight);
+
+            // Appearance
+            shape.FillColor = Color.Transparent;
+            shape.OutlineColor = BORDER_COLOR;
+            shape.OutlineThickness = DEFAULT_BORDER_THICKNESS * (1 / map.ViewScale);
+          }
         }
 
       }
@@ -88,6 +117,9 @@ namespace PK_MapEditor
       selectedItem = null;
     }
 
+    /// <summary>
+    /// Creates a new selectable.
+    /// </summary>
     public PK_Selectable()
       :base()
     {
@@ -99,6 +131,9 @@ namespace PK_MapEditor
 
     #region Methods
 
+    /// <summary>
+    /// Select the current item.
+    /// </summary>
     public void Select()
     {
       if (Visible && Enable)
@@ -113,6 +148,9 @@ namespace PK_MapEditor
       }
     }
 
+    /// <summary>
+    /// Deselect the current item.
+    /// </summary>
     public void Deselect()
     {
       if (selected)
@@ -122,6 +160,10 @@ namespace PK_MapEditor
       }
     }
 
+    /// <summary>
+    /// Draw the selectable.
+    /// </summary>
+    /// <param name="window">The context of the drawing.</param>
     public override void Draw(RenderWindow window)
     {
       if (Visible && Selected)

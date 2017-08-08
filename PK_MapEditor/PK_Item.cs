@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
+using SFML.System;
 
 namespace PK_MapEditor
 {
@@ -30,14 +31,36 @@ namespace PK_MapEditor
     int x;
     int y;
 
+    Texture image;
+
     #endregion
 
     #region Accessors
 
     /// <summary>
+    /// Access the image of the item.
+    /// </summary>
+    public Texture Image {
+      get
+      {
+        return image;
+      }
+      private set
+      {
+        image = value;
+
+        if (value != null)
+        {
+          // Changes the sprite
+          Sprite = new Sprite(value);
+        }
+      }
+    }
+
+    /// <summary>
     /// Access the sprite of the item.
     /// </summary>
-    public Texture Image { get; private set; }
+    private Sprite Sprite { get; set; }
 
     /// <summary>
     /// Access the path of the item's tumbnail.
@@ -71,8 +94,16 @@ namespace PK_MapEditor
         try
         {
           x = value;
-          box.X = value + boxOffsetX;
-          collisionBox.X = value + collisionBoxOffsetX;
+
+          // When the item is moved, we change the position of its boxes accordingly
+          if (box != null)
+          {
+            box.X = value + boxOffsetX;
+          }
+          if (collisionBox != null)
+          {
+            collisionBox.X = value + collisionBoxOffsetX;
+          }
         }
         catch (ArgumentNullException)
         {
@@ -95,8 +126,16 @@ namespace PK_MapEditor
         try
         {
           y = value;
-          box.Y = value + boxOffsetY;
-          collisionBox.Y = value + collisionBoxOffsetY;
+
+          // When the item is moved, we change the position of its boxes accordingly
+          if (box != null)
+          {
+            box.Y = value + boxOffsetY;
+          }
+          if (collisionBox != null)
+          {
+            collisionBox.Y = value + collisionBoxOffsetY;
+          }
         }
         catch (NullReferenceException)
         {
@@ -106,7 +145,6 @@ namespace PK_MapEditor
     }
 
     #endregion
-
 
     #region Constructors
 
@@ -194,14 +232,12 @@ namespace PK_MapEditor
 
       this.collisionBox = collisionBox;
       this.collisionBox.Visible = false;
-      this.collisionBox.AreaColor = COLLISION_BOX_DEFAULT_COLOR;
       this.collisionBox.Enable = false;
       collisionBoxOffsetX = collisionBox.X - this.X;
       collisionBoxOffsetY = collisionBox.Y - this.Y;
 
       this.box = box;
       this.box.Visible = false;
-      this.box.AreaColor = BOX_DEFAULT_COLOR;
       this.box.Enable = false;
       boxOffsetX = box.X - this.X;
       boxOffsetY = box.Y - this.Y;
@@ -216,14 +252,19 @@ namespace PK_MapEditor
          jsonItem.position.x, 
          jsonItem.position.y, 
          "Assets/" + jsonItem.img, 
-         new PK_Area(jsonItem.position.x + jsonItem.box.offsetX, 
-           jsonItem.position.y + jsonItem.box.offsetY, 
-           jsonItem.box.width, 
-           jsonItem.box.height),
          new PK_Area(jsonItem.position.x + jsonItem.collisionBox.offsetX, 
            jsonItem.position.y + jsonItem.collisionBox.offsetY, 
            jsonItem.collisionBox.width, 
-           jsonItem.collisionBox.height))
+           jsonItem.collisionBox.height,
+           COLLISION_BOX_DEFAULT_COLOR,
+           false),
+         new PK_Area(jsonItem.position.x + jsonItem.box.offsetX,
+           jsonItem.position.y + jsonItem.box.offsetY,
+           jsonItem.box.width,
+           jsonItem.box.height,
+           BOX_DEFAULT_COLOR,
+           false)
+         )
     {
       Thumbnail = "Assets/" + jsonItem.thumbnail;
     }
@@ -240,14 +281,38 @@ namespace PK_MapEditor
     {
       if (Visible)
       {
-        //TODO: Draw (on box position)
+        // If the item is selected, we update it's shape
+        // so it can be drawn correctly
+        if (Selected)
+        {
+          Shape = new IntRect(box.X, box.Y, box.Width, box.Height);
+        }
+
+        // If the item has an image, we draw it
+        if (Image != null)
+        {
+          PK_Map map = PK_Map.GetInstance();
+
+          // Position
+          int mapX = (int)((box.X - map.ViewArea.X) * 1 / map.ViewScale);
+          int mapY = (int)((box.Y - map.ViewArea.Y) * 1 / map.ViewScale);
+          Sprite.Position = new Vector2f(mapX, mapY);
+
+          // Scale
+          Sprite.Scale = new Vector2f(1 / map.ViewScale, 1 / map.ViewScale);
+
+          window.Draw(Sprite);
+
+          base.Draw(window);
+        }
+
+        // If the box or the collision box are visible, we draw them
+        if (box.Visible)
+        {
+          box.Draw(window);
+        }
       }
         
-      // If the box or the collision box are visible, we draw them
-      if (box.Visible)
-      {
-        box.Draw(window);
-      }
       if (collisionBox.Visible)
       {
         collisionBox.Draw(window);

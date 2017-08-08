@@ -81,14 +81,34 @@ namespace PK_MapEditor
     /// <param name="y">The Y coordinate of the area's top left corner.</param>
     /// <param name="width">The width of the area.</param>
     /// <param name="height">The height of the area.</param>
-    public PK_Area(int x, int y, int width, int height, Color color)
+    /// <param name="color">The color that fills the area.</param>
+    /// <param name="fullyVisible">Indicates if the area is fully (true) or partialy (false) visible.</param>
+    public PK_Area(int x, int y, int width, int height, Color color, bool fullyVisible)
     {
       X = x;
       Y = y;
       Width = width;
       Height = height;
-      AreaColor = color;
-      color.A = 255 / 2;
+
+      Color colorClone = new Color(color);
+      if (!fullyVisible)
+      {
+        colorClone.A = 255 / 2;
+      }
+      AreaColor = colorClone;
+    }
+
+    /// <summary>
+    /// Creates a new area.
+    /// </summary>
+    /// <param name="x">The X coordinate of the area's top left corner.</param>
+    /// <param name="y">The Y coordinate of the area's top left corner.</param>
+    /// <param name="width">The width of the area.</param>
+    /// <param name="height">The height of the area.</param>
+    /// <param name="color">The color that fills the area.</param>
+    public PK_Area(int x, int y, int width, int height, Color color)
+      :this(x, y, width, height, color, true)
+    {
     }
 
     /// <summary>
@@ -170,9 +190,28 @@ namespace PK_MapEditor
     {
       if (Visible)
       {
+        // If the item is selected, we update it's shape
+        // so it can be drawn correctly
+        if (Selected)
+        {
+          Shape = new IntRect(X, Y, Width, Height);
+        }
+
         RectangleShape shape = new RectangleShape();
-        shape.Position = new Vector2f(X, Y);
-        shape.Size = new Vector2f(Width, Height);
+
+        PK_Map map = PK_Map.GetInstance();
+
+        // Position
+        int mapX = (int)((X - map.ViewArea.X) * 1 / map.ViewScale);
+        int mapY = (int)((Y - map.ViewArea.Y) * 1 / map.ViewScale);
+        shape.Position = new Vector2f(mapX, mapY);
+
+        // Dimensions
+        int mapWidth = (int)(Width * (1 / map.ViewScale));
+        int mapHeight = (int)(Height * (1 / map.ViewScale));
+        shape.Size = new Vector2f(mapWidth, mapHeight);
+
+        // Color
         shape.FillColor = AreaColor;
 
         window.Draw(shape);

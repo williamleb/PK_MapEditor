@@ -7,6 +7,7 @@ using SFML.Graphics;
 using SFML.System;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.IO;
 
 namespace PK_MapEditor
 {
@@ -41,13 +42,13 @@ namespace PK_MapEditor
 
     #region Accessors
 
-    private PK_Area ViewArea
+    public PK_Area ViewArea
     {
       get
       {
         return viewArea;
       }
-      set
+      private set
       {
         viewArea = value;
       }
@@ -157,7 +158,9 @@ namespace PK_MapEditor
       Version = new Version();
       GameMode = PK_GameMode.Undefined;
 
-      AddDrawable(new PK_SpawnArea(20, 20, 100, 100));
+      AddDrawable(new PK_Area(20, 20, 100, 100));
+      AddDrawable(new PK_CharacterSpawnArea(20, 20, 100, 100));
+      AddDrawable(new PK_Item(JsonConvert.DeserializeObject<Json_Item>(File.ReadAllText("Assets/items/TestTree.json"))));
     }
 
     #endregion
@@ -235,14 +238,14 @@ namespace PK_MapEditor
       List<PK_Drawable> viewedDrawables = new List<PK_Drawable>();
       foreach(PK_Drawable drawable in allDrawables)
       {
-        // In case of a spawn area
-        if (drawable is PK_SpawnArea)
+        // In case of an area
+        if (drawable is PK_Area)
         {
-          PK_SpawnArea spawnArea = drawable as PK_SpawnArea;
+          PK_Area area = drawable as PK_Area;
           
-          if (viewArea.CollideWith(spawnArea))
+          if (viewArea.CollideWith(area))
           {
-            viewedDrawables.Add(spawnArea);
+            viewedDrawables.Add(area);
           }
         }
         // In case of an item
@@ -285,11 +288,11 @@ namespace PK_MapEditor
         {
           bool isPicked = false;
           // In case of a spawn area
-          if (movable is PK_SpawnArea)
+          if (movable is PK_Area)
           {
-            PK_SpawnArea spawnArea = movable as PK_SpawnArea;
+            PK_Area area = movable as PK_Area;
 
-            if (spawnArea.Contains(mouseX, mouseY))
+            if (area.Contains(mouseX, mouseY))
             {
               isPicked = true;
             }
@@ -308,7 +311,9 @@ namespace PK_MapEditor
 
           if (isPicked)
           {
+            movable.Select();
             movable.Pick(mouseX, mouseY);
+            break;
           }
         }
       }
@@ -328,12 +333,12 @@ namespace PK_MapEditor
 
     public int GetMapXFromGameMapX(int gameMapX)
     {
-      return gameMapX + ViewArea.X;
+      return (int)((gameMapX + ViewArea.X) * ViewScale);
     }
 
     public int GetMapYFromGameMapY(int gameMapY)
     {
-      return gameMapY + ViewArea.Y;
+      return (int)((gameMapY + ViewArea.Y) * ViewScale);
     }
 
     #endregion
