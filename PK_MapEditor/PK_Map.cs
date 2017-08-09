@@ -34,7 +34,7 @@ namespace PK_MapEditor
 
     float viewScale;
 
-    PK_Area viewArea;
+    PK_ViewArea viewArea;
 
     Texture backgroundImage;
 
@@ -42,7 +42,7 @@ namespace PK_MapEditor
 
     #region Accessors
 
-    public PK_Area ViewArea
+    public PK_ViewArea ViewArea
     {
       get
       {
@@ -152,7 +152,7 @@ namespace PK_MapEditor
 
     private PK_Map()
     {
-      ViewArea = new PK_Area();
+      ViewArea = new PK_ViewArea();
       BackgroundImage = null;
       Name = "Undefined";
       Version = new Version();
@@ -271,16 +271,22 @@ namespace PK_MapEditor
       // Updates the picked item
       if (PK_Movable.PickedItem != null)
       {
-        PK_Movable.PickedItem.Update(GetMapXFromFormX(mouseX), GetMapYFromFormY(mouseY));
+        int mapMouseX = GetMapXFromFormX(mouseX);
+        int mapMouseY = GetMapYFromFormY(mouseY);
+        PK_Movable.PickedItem.Update(mapMouseX, mapMouseY);
       }
     }
 
+    /// <summary>
+    /// Method called whenever the mouse buttons are pressed on the game map.
+    /// Picks the clicked item or the background.
+    /// </summary>
     public void OnMouseDown(object sender, MouseEventArgs e)
     {
       int mouseX = GetMapXFromGameMapX(e.X);
       int mouseY = GetMapYFromGameMapY(e.Y);
 
-      // TODO: Maybe put that in a function?
+      bool somethingPiked = false;
       foreach(PK_Drawable drawable in allSeenDrawables)
       {
         PK_Movable movable = drawable as PK_Movable;
@@ -313,33 +319,102 @@ namespace PK_MapEditor
           {
             movable.Select();
             movable.Pick(mouseX, mouseY);
+            somethingPiked = true;
             break;
           }
         }
       }
 
-      //TODO: Option to move the background if nothing is picked
+      // If no item was picked, picks the view area.
+      if (!somethingPiked)
+      {
+        viewArea.Pick(mouseX, mouseY);
+      }
     }
 
+    #region Coordinates converter
+
+    /// <summary>
+    /// Converts the form's X coordinate to the game map control's X coordinate.
+    /// </summary>
+    /// <param name="formX">The form's X coordinate.</param>
+    /// <returns>The converted game map control's X coordinate.</returns>
+    public int GetGameMapXFromFormX(int formX)
+    {
+      return formX - PK_MapEditor.GetInstance().GameMapControl.Left;
+    }
+
+    /// <summary>
+    /// Converts the form's Y coordinate to the game map control's Y coordinate.
+    /// </summary>
+    /// <param name="formX">The form's Y coordinate.</param>
+    /// <returns>The converted game map control's Y coordinate.</returns>
+    public int GetGameMapYFromFormY(int formY)
+    {
+      return formY - PK_MapEditor.GetInstance().GameMapControl.Top;
+    }
+
+    /// <summary>
+    /// Converts the form's X coordinate to the map's X coordinate.
+    /// </summary>
+    /// <param name="formX">The form's X coordinate.</param>
+    /// <returns>The converted map's X coordinate.</returns>
     public int GetMapXFromFormX(int formX)
     {
-      return GetMapXFromGameMapX(formX - PK_MapEditor.GetInstance().GameMapControl.Left);
+      return GetMapXFromGameMapX(GetGameMapXFromFormX(formX));
     }
 
+    /// <summary>
+    /// Converts the form's Y coordinate to the map's Y coordinate.
+    /// </summary>
+    /// <param name="formX">The form's Y coordinate.</param>
+    /// <returns>The converted map's Y coordinate.</returns>
     public int GetMapYFromFormY(int formY)
     {
-      return GetMapYFromGameMapY(formY - PK_MapEditor.GetInstance().GameMapControl.Top);
+      return GetMapYFromGameMapY(GetGameMapYFromFormY(formY));
     }
 
+    /// <summary>
+    /// Converts the game map control's X coordinate to the map's X coordinate.
+    /// </summary>
+    /// <param name="gameMapX">The game map control's X coordinate.</param>
+    /// <returns>The map's X coordinate.</returns>
     public int GetMapXFromGameMapX(int gameMapX)
     {
       return (int)((gameMapX + ViewArea.X) * ViewScale);
     }
 
+    /// <summary>
+    /// Converts the game map control's Y coordinate to the map's Y coordinate.
+    /// </summary>
+    /// <param name="gameMapX">The game map control's Y coordinate.</param>
+    /// <returns>The map's Y coordinate.</returns>
     public int GetMapYFromGameMapY(int gameMapY)
     {
       return (int)((gameMapY + ViewArea.Y) * ViewScale);
     }
+
+    /// <summary>
+    /// Converts the map's X coordinate to the game map control's X coordinate.
+    /// </summary>
+    /// <param name="mapX">The map's X coordinate.</param>
+    /// <returns>The game map control's X coordinate.</returns>
+    public int GetGameMapXFromMapX(int mapX)
+    {
+      return (int)((mapX / ViewScale) - ViewArea.X);
+    }
+
+    /// <summary>
+    /// Converts the map's Y coordinate to the game map control's Y coordinate.
+    /// </summary>
+    /// <param name="mapX">The map's Y coordinate.</param>
+    /// <returns>The game map control's Y coordinate.</returns>
+    public int GetGameMapYFromMapY(int mapY)
+    {
+      return (int)((mapY / ViewScale) - ViewArea.Y);
+    }
+
+    #endregion
 
     #endregion
   }

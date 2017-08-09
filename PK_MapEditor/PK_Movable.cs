@@ -25,13 +25,13 @@ namespace PK_MapEditor
 
     #endregion
 
-    bool picked;
+    protected bool picked;
 
     // Those values are updated when the object is picked.
     // They are used to know where the cursor is in relation with the
     // object so it can be properly moved.
-    int offsetX;
-    int offsetY;
+    protected int offsetX;
+    protected int offsetY;
 
     // Those values are updated when the object is picked.
     // They are used to know where was the object picked to return
@@ -102,7 +102,7 @@ namespace PK_MapEditor
     /// </summary>
     /// <param name="mouseX">Represents the X coordinate of the mouse on the map.</param>
     /// <param name="mouseY">Represents the Y coordinate of the mouse on the map.</param>
-    public void Pick(int mouseX, int mouseY)
+    public virtual void Pick(int mouseX, int mouseY)
     {
       // We pick the item if it is visible, enabled and there is not
       // something else being picked
@@ -160,7 +160,7 @@ namespace PK_MapEditor
     /// </summary>
     /// <param name="mouseX">Represents the X coordinate of the mouse on the map.</param>
     /// <param name="mouseY">Represents the Y coordinate of the mouse on the map.</param>
-    public void Update(int mouseX, int mouseY)
+    public virtual void Update(int mouseX, int mouseY)
     {
       if (picked)
       {

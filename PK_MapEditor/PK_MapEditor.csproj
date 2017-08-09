@@ -82,6 +82,7 @@
     <Compile Include="PK_Monster.cs" />
     <Compile Include="PK_Movable.cs" />
     <Compile Include="PK_SpawnArea.cs" />
+    <Compile Include="PK_ViewArea.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PK_Version.cs" />

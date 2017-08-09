@@ -41,7 +41,7 @@ namespace PK_MapEditor
     /// Represents every view scales that the map can have.
     /// Lower indexes are more distant than higher indexes.
     /// </summary>
-    private static float[] allowedViewScales = new float[] { 2.0f, 1.0f, 0.75f, 0.5f, 0.25f };
+    private static float[] allowedViewScales = new float[] { 10.0f, 2.0f, 1.0f, 0.75f, 0.5f, 0.25f };
 
     static PK_MapEditor instance = null;
 
@@ -131,6 +131,16 @@ namespace PK_MapEditor
       map.Draw(window);
 
       window.Display();
+
+      // TOREMOVE
+      GlobalX.Text = "Global X: " + MousePosition.X.ToString();
+      GlobalY.Text = "Global Y: " + MousePosition.Y.ToString();
+      FormX.Text = "Form X: " + mouseX.ToString();
+      FormY.Text = "Form Y: " + mouseY.ToString();
+      GameMapX.Text = "Game Map X: " + map.GetGameMapXFromFormX(mouseX).ToString();
+      GameMapY.Text = "Game Map Y: " + map.GetGameMapYFromFormY(mouseY).ToString();
+      MapX.Text = "Map X: " + map.GetMapXFromFormX(mouseX).ToString();
+      MapY.Text = "Map Y: " + map.GetMapYFromFormY(mouseY).ToString();
     }
 
     /// <summary>
@@ -139,19 +149,23 @@ namespace PK_MapEditor
     /// </summary>
     private void GameMap_OnMouseWheel(object sender, MouseEventArgs e)
     {
-      // Zooms or unzooms depending of which direction the wheel has gone.
-      int delta = e.Delta;
-      if (delta <= -120)
+      // We can onl change the view scale if there is no items currently being picked.
+      if (PK_Movable.PickedItem == null)
       {
-        currentViewScaleIndex = Math.Max(currentViewScaleIndex - 1, 0);
-      }
-      else if (delta >= 120)
-      {
-        currentViewScaleIndex = Math.Min(currentViewScaleIndex + 1, allowedViewScales.Length - 1);
-      }
+        // Zooms or unzooms depending of which direction the wheel has gone.
+        int delta = e.Delta;
+        if (delta <= -120)
+        {
+          currentViewScaleIndex = Math.Max(currentViewScaleIndex - 1, 0);
+        }
+        else if (delta >= 120)
+        {
+          currentViewScaleIndex = Math.Min(currentViewScaleIndex + 1, allowedViewScales.Length - 1);
+        }
 
-      // Sets the new scale on the map.
-      map.ViewScale = allowedViewScales[currentViewScaleIndex];
+        // Sets the new scale on the map.
+        map.ViewScale = allowedViewScales[currentViewScaleIndex];
+      }
     }
 
     /// <summary>
@@ -179,10 +193,18 @@ namespace PK_MapEditor
 
         IntRect gameMap = new IntRect(GameMap.Left, GameMap.Top, GameMap.Width, GameMap.Height);
 
-        // If the mouse wasn't released on the game map, we cancel the pick
+        // If the mouse wasn't released on the game map, we cancel the pick.
         if (!gameMap.Contains(mouseX, mouseY))
         {
-          PK_Movable.PickedItem.CancelPick();
+          // But only if the picked item is not the view area.
+          if (PK_Movable.PickedItem is PK_ViewArea)
+          {
+            PK_Movable.PickedItem.Unpick();
+          }
+          else
+          {
+            PK_Movable.PickedItem.CancelPick();
+          }
 
           // And, if the item was spawned from the form, and not picked from the game map
           if (itemSpawnedFromForm)

@@ -9,7 +9,7 @@ using SFML.System;
 namespace PK_MapEditor
 {
   /// <summary>
-  /// Represents an rectangle area on the map.
+  /// Represents a rectangle area on the map.
   /// </summary>
   public class PK_Area : PK_Movable
   {
@@ -91,7 +91,7 @@ namespace PK_MapEditor
       Height = height;
 
       Color colorClone = new Color(color);
-      if (!fullyVisible)
+      if (!fullyVisible && colorClone.A != 0)
       {
         colorClone.A = 255 / 2;
       }
