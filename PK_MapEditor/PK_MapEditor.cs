@@ -87,7 +87,7 @@ namespace PK_MapEditor
 
       itemSpawnedFromForm = false;
 
-      map.BackgroundImage = new Texture("Assets/img/background_test.png");
+      map.BackgroundImage = new Texture("Assets/img/background_test2.png");
       map.ViewScale = allowedViewScales[currentViewScaleIndex];
     }
 
@@ -98,6 +98,11 @@ namespace PK_MapEditor
         instance = new PK_MapEditor();
       }
       return instance;
+    }
+
+    public void Delete()
+    {
+      instance = null;
     }
 
     // TODO : GameMapOnResize
@@ -132,7 +137,7 @@ namespace PK_MapEditor
 
       window.Display();
 
-      // TOREMOVE
+      // TODO: Remove
       GlobalX.Text = "Global X: " + MousePosition.X.ToString();
       GlobalY.Text = "Global Y: " + MousePosition.Y.ToString();
       FormX.Text = "Form X: " + mouseX.ToString();
@@ -141,6 +146,13 @@ namespace PK_MapEditor
       GameMapY.Text = "Game Map Y: " + map.GetGameMapYFromFormY(mouseY).ToString();
       MapX.Text = "Map X: " + map.GetMapXFromFormX(mouseX).ToString();
       MapY.Text = "Map Y: " + map.GetMapYFromFormY(mouseY).ToString();
+
+      ViewAreaX.Text = "View Area X: " + map.ViewArea.X.ToString();
+      ViewAreaY.Text = "View Area Y: " + map.ViewArea.Y.ToString();
+      ViewAreaWidth.Text = "View Area Width " + map.ViewArea.Width.ToString();
+      ViewAreaHeight.Text = "View Area Height " + map.ViewArea.Height.ToString();
+      ViewScale.Text = "View Scale: " + map.ViewScale.ToString();
+
     }
 
     /// <summary>
@@ -238,5 +250,10 @@ namespace PK_MapEditor
     }
 
     #endregion
+
+    private void d(object sender, KeyEventArgs e)
+    {
+
+    }
   }
 }

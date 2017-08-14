@@ -24,3 +24,8 @@ C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\obj\Debug\
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\background_test.png
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\background_test2.png
 C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\map\mapExemple_mode.json
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\character_thumbnail.png
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\img\item_TestTree.png
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Assets\items\TestTree.json
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Newtonsoft.Json.dll
+C:\Users\willi\Desktop\Project Kingdom\PK_MapEditor\Test_PK_MapEditor\bin\Debug\Newtonsoft.Json.xml

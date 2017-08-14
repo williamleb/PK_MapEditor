@@ -381,7 +381,7 @@ namespace PK_MapEditor
     /// <returns>The map's X coordinate.</returns>
     public int GetMapXFromGameMapX(int gameMapX)
     {
-      return (int)((gameMapX + ViewArea.X) * ViewScale);
+      return (int)(gameMapX * ViewScale + ViewArea.X);
     }
 
     /// <summary>
@@ -391,7 +391,7 @@ namespace PK_MapEditor
     /// <returns>The map's Y coordinate.</returns>
     public int GetMapYFromGameMapY(int gameMapY)
     {
-      return (int)((gameMapY + ViewArea.Y) * ViewScale);
+      return (int)(gameMapY * ViewScale + ViewArea.Y);
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ namespace PK_MapEditor
     /// <returns>The game map control's X coordinate.</returns>
     public int GetGameMapXFromMapX(int mapX)
     {
-      return (int)((mapX / ViewScale) - ViewArea.X);
+      return (int)(mapX / ViewScale - ViewArea.X/ViewScale);
     }
 
     /// <summary>
@@ -411,7 +411,7 @@ namespace PK_MapEditor
     /// <returns>The game map control's Y coordinate.</returns>
     public int GetGameMapYFromMapY(int mapY)
     {
-      return (int)((mapY / ViewScale) - ViewArea.Y);
+      return (int)(mapY / ViewScale - ViewArea.Y/ViewScale);
     }
 
     #endregion

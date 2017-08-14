@@ -76,11 +76,11 @@ namespace PK_MapEditor
         PK_Map map = PK_Map.GetInstance();
 
         // travelX and travelY represent the movement the mouse has done by the origin.
-        int travelX = map.GetGameMapXFromMapX(mouseX) - origMouseX;
-        int travelY = map.GetGameMapYFromMapY(mouseY) - origMouseY;
+        int travelX = (int)((map.GetGameMapXFromMapX(mouseX) - origMouseX) * map.ViewScale);
+        int travelY = (int)((map.GetGameMapYFromMapY(mouseY) - origMouseY) * map.ViewScale);
 
-        X = origMouseX + offsetX - travelX;
-        Y = origMouseY + offsetY - travelY;
+        X = origX - travelX;
+        Y = origY - travelY;
       }
     }
 

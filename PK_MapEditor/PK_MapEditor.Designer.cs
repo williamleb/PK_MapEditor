@@ -39,15 +39,21 @@
       this.GameMapY = new System.Windows.Forms.Label();
       this.MapX = new System.Windows.Forms.Label();
       this.MapY = new System.Windows.Forms.Label();
+      this.ViewAreaX = new System.Windows.Forms.Label();
+      this.ViewAreaY = new System.Windows.Forms.Label();
+      this.ViewScale = new System.Windows.Forms.Label();
+      this.ViewAreaWidth = new System.Windows.Forms.Label();
+      this.ViewAreaHeight = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // GameMap
       // 
-      this.GameMap.Location = new System.Drawing.Point(233, 106);
+      this.GameMap.Location = new System.Drawing.Point(281, 1);
       this.GameMap.Name = "GameMap";
-      this.GameMap.Size = new System.Drawing.Size(255, 255);
+      this.GameMap.Size = new System.Drawing.Size(371, 371);
       this.GameMap.TabIndex = 0;
       this.GameMap.Text = "sfmlCanvas1";
+      this.GameMap.KeyDown += new System.Windows.Forms.KeyEventHandler(this.d);
       this.GameMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameMap_MouseDown);
       this.GameMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameMap_MouseUp);
       // 
@@ -129,11 +135,61 @@
       this.MapY.TabIndex = 8;
       this.MapY.Text = "Map X: 0";
       // 
+      // ViewAreaX
+      // 
+      this.ViewAreaX.AutoSize = true;
+      this.ViewAreaX.Location = new System.Drawing.Point(12, 191);
+      this.ViewAreaX.Name = "ViewAreaX";
+      this.ViewAreaX.Size = new System.Drawing.Size(77, 13);
+      this.ViewAreaX.TabIndex = 9;
+      this.ViewAreaX.Text = "View Area X: 0";
+      // 
+      // ViewAreaY
+      // 
+      this.ViewAreaY.AutoSize = true;
+      this.ViewAreaY.Location = new System.Drawing.Point(12, 204);
+      this.ViewAreaY.Name = "ViewAreaY";
+      this.ViewAreaY.Size = new System.Drawing.Size(77, 13);
+      this.ViewAreaY.TabIndex = 10;
+      this.ViewAreaY.Text = "View Area Y: 0";
+      // 
+      // ViewScale
+      // 
+      this.ViewScale.AutoSize = true;
+      this.ViewScale.Location = new System.Drawing.Point(12, 243);
+      this.ViewScale.Name = "ViewScale";
+      this.ViewScale.Size = new System.Drawing.Size(72, 13);
+      this.ViewScale.TabIndex = 11;
+      this.ViewScale.Text = "View Scale: 0";
+      // 
+      // ViewAreaWidth
+      // 
+      this.ViewAreaWidth.AutoSize = true;
+      this.ViewAreaWidth.Location = new System.Drawing.Point(12, 217);
+      this.ViewAreaWidth.Name = "ViewAreaWidth";
+      this.ViewAreaWidth.Size = new System.Drawing.Size(98, 13);
+      this.ViewAreaWidth.TabIndex = 12;
+      this.ViewAreaWidth.Text = "View Area Width: 0";
+      // 
+      // ViewAreaHeight
+      // 
+      this.ViewAreaHeight.AutoSize = true;
+      this.ViewAreaHeight.Location = new System.Drawing.Point(12, 230);
+      this.ViewAreaHeight.Name = "ViewAreaHeight";
+      this.ViewAreaHeight.Size = new System.Drawing.Size(101, 13);
+      this.ViewAreaHeight.TabIndex = 13;
+      this.ViewAreaHeight.Text = "View Area Height: 0";
+      // 
       // PK_MapEditor
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(500, 373);
+      this.ClientSize = new System.Drawing.Size(654, 373);
+      this.Controls.Add(this.ViewAreaHeight);
+      this.Controls.Add(this.ViewAreaWidth);
+      this.Controls.Add(this.ViewScale);
+      this.Controls.Add(this.ViewAreaY);
+      this.Controls.Add(this.ViewAreaX);
       this.Controls.Add(this.MapY);
       this.Controls.Add(this.MapX);
       this.Controls.Add(this.GameMapY);
@@ -163,6 +219,11 @@
     private System.Windows.Forms.Label GameMapY;
     private System.Windows.Forms.Label MapX;
     private System.Windows.Forms.Label MapY;
+    private System.Windows.Forms.Label ViewAreaX;
+    private System.Windows.Forms.Label ViewAreaY;
+    private System.Windows.Forms.Label ViewScale;
+    private System.Windows.Forms.Label ViewAreaWidth;
+    private System.Windows.Forms.Label ViewAreaHeight;
   }
 }
 

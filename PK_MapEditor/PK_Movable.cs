@@ -36,8 +36,8 @@ namespace PK_MapEditor
     // Those values are updated when the object is picked.
     // They are used to know where was the object picked to return
     // it to its original position if the pick is canceled.
-    int origX;
-    int origY;
+    protected int origX;
+    protected int origY;
 
     #endregion
 
